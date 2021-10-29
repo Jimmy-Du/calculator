@@ -175,6 +175,21 @@ const equalClick = () => {
 }
 
 
+// Function:    backspaceClick()
+// Description: 
+// Parameters:  N/A
+// Return:      N/A
+const backspaceClick = () => {
+  calcDisplay.value = calcDisplay.value.substring(0, calcDisplay.value.length - 1)
+
+  // if the new calculator display value after removing a character is empty,
+  // the display will be reset back to 0
+  if (calcDisplay.value == "") {
+    emptyDisplay()
+  }
+}
+
+
 
 document.querySelectorAll('.num-btn').forEach(btn => {
   btn.addEventListener('click', numClick)
@@ -186,3 +201,4 @@ document.querySelectorAll('.operator-btn').forEach(btn => {
 
 document.querySelector('#equal-btn').addEventListener('click', equalClick)
 document.querySelector('#clear-btn').addEventListener('click', clearCalc)
+document.querySelector('#backspace-btn').addEventListener('click', backspaceClick)
