@@ -114,13 +114,48 @@ const emptyDisplay = () => {
 // Return:      N/A
 const numClick = (e) => {
   // if the current value in the display is not 0, append the clicked number to the display
-  if (calcDisplay.value != 0 && !operatorLastClicked && !recentCalculation) {
-    calcDisplay.value = calcDisplay.value.concat(e.target.value)
+  if (calcDisplay.value != "0" && !operatorLastClicked && !recentCalculation) {
+    // if the pressed button is the negate button, the current number will be negated
+    if (e.target.value === "-") {
+      // if the number is negative, the negative symbol is removed
+      if (calcDisplay.value.includes('-')) {
+        calcDisplay.value = calcDisplay.value.substring(1)
+      }
+      // else, the negative symbol is added
+      else {
+        calcDisplay.value = e.target.value + calcDisplay.value
+      }
+    }
+    // if the value of the button pressed is a decimal and the current value in the calculator display
+    // does not contain a decimal or the button pressed is not a decimal, the value of the button is
+    // added to the end of the calculator display value
+    else if (e.target.value === "." && !calcDisplay.value.includes('.') || e.target.value !== ".") {
+      calcDisplay.value = calcDisplay.value.concat(e.target.value)
+    }
   }
   // else, set the display to the clicked number
   else {
-    calcDisplay.value = e.target.value
-    operatorLastClicked = false
+    // if the first number button clicked is the decimal button, it will be appended to the end of the
+    // current calculator value
+    if (e.target.value === ".") {
+      // if the decimal is clicked after a calculation has been recently completed or after
+      // an operator button was clicked, the display is emptied before appending the decimal
+      if (recentCalculation || operatorLastClicked) {
+        emptyDisplay()
+      }
+
+      calcDisplay.value = calcDisplay.value + e.target.value
+    }
+    // if the number button was not the negate button, the calculator display is set to the value of the
+    // button pressed
+    else if (e.target.value !== "-") {
+      calcDisplay.value = e.target.value
+    }
+
+    if (e.target.value !== "-") {
+      operatorLastClicked = false
+    }
+
     recentCalculation = false
   }
 }
