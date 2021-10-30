@@ -74,6 +74,10 @@ const multiply = (num1, num2) => {
 //              num2: the second number of the operation
 // Return:      the sum of the num1 divided by num2
 const divide = (num1, num2) => {
+  if (num2 == 0) {
+    return "Error"
+  }
+
   return Number(num1) / Number(num2)
 }
 
@@ -129,6 +133,7 @@ const numClick = (e) => {
 // Parameters:  e: additional info on the event that called this function
 // Return:      N/A
 const operatorClick = (e) => {
+  console.log('hit')
   // if the operator has been set and the last button clicked was not an operator,
   // the calculation is performed
   if (operatorSet && !operatorLastClicked) {
@@ -191,12 +196,14 @@ const backspaceClick = () => {
 
 
 
-document.querySelectorAll('.num-btn').forEach(btn => {
+document.querySelectorAll('.num-btns button').forEach(btn => {
   btn.addEventListener('click', numClick)
 })
 
-document.querySelectorAll('.operator-btn').forEach(btn => {
-  btn.addEventListener('click', operatorClick)
+document.querySelectorAll('.operator-btns button').forEach(btn => {
+  if (btn.id !== "equal-btn") {
+    btn.addEventListener('click', operatorClick)
+  } 
 })
 
 document.querySelector('#equal-btn').addEventListener('click', equalClick)

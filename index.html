@@ -9,25 +9,33 @@
 </head>
 <body>
   <div class="container">
-    <input class="calc-display" value="0" readonly/>
-    <div class="calc-btns">
-      <button id="clear-btn">Clear</button>
-      <button id="backspace-btn">Back</button>
-      <button class="num-btn" value="1">1</button>
-      <button class="num-btn" value="2">2</button>
-      <button class="num-btn" value="3">3</button>
-      <button class="num-btn" value="4">4</button>
-      <button class="num-btn" value="5">5</button>
-      <button class="num-btn" value="6">6</button>
-      <button class="num-btn" value="7">7</button>
-      <button class="num-btn" value="8">8</button>
-      <button class="num-btn" value="9">9</button>
-      <button class="num-btn" value="0">0</button>
-      <button class="operator-btn" value="+">+</button>
-      <button class="operator-btn" value="-">-</button>
-      <button class="operator-btn" value="*">*</button>
-      <button class="operator-btn" value="/">/</button>
-      <button id="equal-btn">=</button>
+    <div class="calculator">
+      <input class="calc-display" value="0" readonly/>
+      <div class="function-btns">
+        <button id="clear-btn">Clear</button>
+        <button id="backspace-btn">Back</button>
+      </div>
+      <div class="num-btns">
+        <button value="1">1</button>
+        <button value="2">2</button>
+        <button value="3">3</button>
+        <button value="4">4</button>
+        <button value="5">5</button>
+        <button value="6">6</button>
+        <button value="7">7</button>
+        <button value="8">8</button>
+        <button value="9">9</button>
+        <button value="-">+/-</button>
+        <button value="0">0</button>
+        <button value=".">.</button>
+      </div>
+      <div class="operator-btns">
+        <button value="+">+</button>
+        <button value="-">-</button>
+        <button value="*">*</button>
+        <button value="/">/</button>
+        <button id="equal-btn">=</button>
+      </div>
     </div>
   </div>
   <script src="calculator.js"></script>
