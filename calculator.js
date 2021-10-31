@@ -83,6 +83,88 @@ const divide = (num1, num2) => {
 
 
 
+// Function:    processEnteredNum()
+// Description: 
+// Parameters:  num: the number to be processed
+// Return:      N/A
+const processEnteredNum = (num) => {
+  // if the current value in the display is not 0, append the clicked number to the display
+  if (calcDisplay.value != "0" && !operatorLastClicked && !recentCalculation) {
+    // if the pressed button is the negate button, the current number will be negated
+    if (num === "-") {
+      // if the number is negative, the negative symbol is removed
+      if (calcDisplay.value.includes('-')) {
+        calcDisplay.value = calcDisplay.value.substring(1)
+      }
+      // else, the negative symbol is added
+      else {
+        calcDisplay.value = num + calcDisplay.value
+      }
+    }
+    // if the value of the button pressed is a decimal and the current value in the calculator display
+    // does not contain a decimal or the button pressed is not a decimal, the value of the button is
+    // added to the end of the calculator display value
+    else if (num === "." && !calcDisplay.value.includes('.') || num !== ".") {
+      calcDisplay.value = calcDisplay.value.concat(num)
+    }
+  }
+  // else, set the display to the clicked number
+  else {
+    // if the first number button clicked is the decimal button, it will be appended to the end of the
+    // current calculator value
+    if (num === ".") {
+      // if the decimal is clicked after a calculation has been recently completed or after
+      // an operator button was clicked, the display is emptied before appending the decimal
+      if (recentCalculation || operatorLastClicked) {
+        emptyDisplay()
+      }
+
+      calcDisplay.value = calcDisplay.value + num
+    }
+    // if the number button was not the negate button, the calculator display is set to the value of the
+    // button pressed
+    else if (num !== "-") {
+      calcDisplay.value = num
+    }
+
+    if (num !== "-") {
+      operatorLastClicked = false
+    }
+
+    recentCalculation = false
+  }
+}
+
+
+
+// Function:    processEnteredOperator()
+// Description: sets the specified operator for the calculation
+// Parameters:  operator: the operator to be set for the calculation
+// Return:      N/A
+const processEnteredOperator = (operator) => {
+  // if the operator has been set and the last button clicked was not an operator,
+  // the calculation is performed
+  if (operatorSet && !operatorLastClicked) {
+    secondNum = calcDisplay.value
+    
+    calcDisplay.value = operate(selectedOperator, firstNum, secondNum)
+    
+    firstNum = calcDisplay.value
+  }
+  // else, the first number of the calculation is set
+  else {
+    firstNum = calcDisplay.value
+    recentCalculation = false
+  }
+  
+  selectedOperator = operator
+
+  operatorSet = true
+  operatorLastClicked = true
+}
+
+
+
 // Function:    clearCalc()
 // Description: resets the calculator display to nothing
 // Parameters:  N/A
@@ -113,51 +195,7 @@ const emptyDisplay = () => {
 // Parameters:  e: additional info on the event that called this function
 // Return:      N/A
 const numClick = (e) => {
-  // if the current value in the display is not 0, append the clicked number to the display
-  if (calcDisplay.value != "0" && !operatorLastClicked && !recentCalculation) {
-    // if the pressed button is the negate button, the current number will be negated
-    if (e.target.value === "-") {
-      // if the number is negative, the negative symbol is removed
-      if (calcDisplay.value.includes('-')) {
-        calcDisplay.value = calcDisplay.value.substring(1)
-      }
-      // else, the negative symbol is added
-      else {
-        calcDisplay.value = e.target.value + calcDisplay.value
-      }
-    }
-    // if the value of the button pressed is a decimal and the current value in the calculator display
-    // does not contain a decimal or the button pressed is not a decimal, the value of the button is
-    // added to the end of the calculator display value
-    else if (e.target.value === "." && !calcDisplay.value.includes('.') || e.target.value !== ".") {
-      calcDisplay.value = calcDisplay.value.concat(e.target.value)
-    }
-  }
-  // else, set the display to the clicked number
-  else {
-    // if the first number button clicked is the decimal button, it will be appended to the end of the
-    // current calculator value
-    if (e.target.value === ".") {
-      // if the decimal is clicked after a calculation has been recently completed or after
-      // an operator button was clicked, the display is emptied before appending the decimal
-      if (recentCalculation || operatorLastClicked) {
-        emptyDisplay()
-      }
-
-      calcDisplay.value = calcDisplay.value + e.target.value
-    }
-    // if the number button was not the negate button, the calculator display is set to the value of the
-    // button pressed
-    else if (e.target.value !== "-") {
-      calcDisplay.value = e.target.value
-    }
-
-    if (e.target.value !== "-") {
-      operatorLastClicked = false
-    }
-
-    recentCalculation = false
-  }
+  processEnteredNum(e.target.value)
 }
 
 
@@ -168,26 +206,7 @@ const numClick = (e) => {
 // Parameters:  e: additional info on the event that called this function
 // Return:      N/A
 const operatorClick = (e) => {
-  console.log('hit')
-  // if the operator has been set and the last button clicked was not an operator,
-  // the calculation is performed
-  if (operatorSet && !operatorLastClicked) {
-    secondNum = calcDisplay.value
-    
-    calcDisplay.value = operate(selectedOperator, firstNum, secondNum)
-    
-    firstNum = calcDisplay.value
-  }
-  // else, the first number of the calculation is set
-  else {
-    firstNum = calcDisplay.value
-    recentCalculation = false
-  }
-  
-  selectedOperator = e.target.value
-
-  operatorSet = true
-  operatorLastClicked = true
+  processEnteredOperator(e.target.value)
 }
 
 
@@ -231,6 +250,35 @@ const backspaceClick = () => {
 
 
 
+// Function:    onKeyDown()
+// Description: called upon when a key is pressed while the calculator is focused and
+//              will carry out the operation specified by the pressed key
+// Parameters:  e: additional info about the keydown event
+// Return:      N/A
+const onKeyDown = (e) => {
+  // if the pressed key is a number between 0 and 9, it will be added to 
+  // the calculator display
+  if (e.key >= 0 && e.key <= 9) {
+    processEnteredNum(e.key)
+  }
+  // if the pressed key is an operator, the selected operator will be set for the
+  // current calculation
+  else if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
+    processEnteredOperator(e.key)
+  }
+  // if the pressed key is backspace or delete, a character will be removed from 
+  // the calculator display
+  else if (e.key === "Backspace" || e.key === "Delete") {
+    backspaceClick()
+  }
+  // if the pressed key is the enter or "=" key, the calculation will be calculated
+  else if (e.key === "Enter" || e.key === "=") {
+    equalClick()
+  }
+}
+
+
+
 document.querySelectorAll('.num-btns button').forEach(btn => {
   btn.addEventListener('click', numClick)
 })
@@ -244,3 +292,5 @@ document.querySelectorAll('.operator-btns button').forEach(btn => {
 document.querySelector('#equal-btn').addEventListener('click', equalClick)
 document.querySelector('#clear-btn').addEventListener('click', clearCalc)
 document.querySelector('#backspace-btn').addEventListener('click', backspaceClick)
+
+document.querySelector('.calculator').addEventListener('keydown', onKeyDown)
