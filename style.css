@@ -1,3 +1,100 @@
 * {
+  /* border: solid;
+  border-width: 1px; */
   font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  text-align: center;
+  margin: auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.calculator {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+
+  width: 35%;
+  padding: 20px;
+  height: 75%;
+  background-color: #3730A3;
+  border-radius: 15px;
+  box-shadow: 5px 7px #6B7280;
+}
+
+.calc-display {
+  grid-column: 1 / 5;
+  grid-row: 1;
+  
+  font-size: 64px;
+  text-align: right;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 2px 2px #6B7280;
+  margin-bottom: 5px;
+}
+
+button {
+  margin: 5px;
+  font-size: 26px;
+  border-radius: 10px;
+  border-color: transparent;
+  box-shadow: 2px 2px #6B7280;
+}
+
+button:hover, .num-btns button:hover, .function-btns button:hover, .operator-btns button:hover{
+  background-color: #D1D5DB;
+}
+
+.function-btns {
+  grid-column: 1 / 4;
+  grid-row: 2;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+}
+
+#clear-btn {
+  grid-column: 1;
+}
+
+#backspace-btn {
+  grid-column: 2;
+}
+
+.num-btns {
+  grid-column: 1 / 4;
+  grid-row: 3 / 7;
+  
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+}
+
+.num-btns button {
+  background-color: #FBBF24;
+}
+
+.operator-btns {
+  grid-column: 4;
+  grid-row: 2 / 7;
+
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+}
+
+.operator-btns button {
+  background-color: #60A5FA;
 }
