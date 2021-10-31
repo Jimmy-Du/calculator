@@ -98,3 +98,20 @@ button:hover, .num-btns button:hover, .function-btns button:hover, .operator-btn
 .operator-btns button {
   background-color: #60A5FA;
 }
+
+@media (max-width: 1024px) { 
+  .calculator {
+    width: 80%;
+  }
+
+  button {
+    font-size: 25px;
+  }
+}
+
+@media (max-height: 450px) {
+  .calculator {
+    height: 85%;
+    width: 70%;
+  }
+}
