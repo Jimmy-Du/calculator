@@ -210,6 +210,27 @@ const operatorClick = (e) => {
 }
 
 
+// Function:    roundNumber()
+// Description: function to round numbers to the scale passed in
+//              retrieved from: 
+//              https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
+// Parameters:  num: the number to be rounded
+//              scale: 
+// Return:      
+const roundNumber = (num, scale) => {
+  if(!("" + num).includes("e")) {
+    return +(Math.round(num + "e+" + scale)  + "e-" + scale);
+  } else {
+    var arr = ("" + num).split("e");
+    var sig = ""
+    if(+arr[1] + scale > 0) {
+      sig = "+";
+    }
+    return +(Math.round(+arr[0] + "e" + sig + (+arr[1] + scale)) + "e-" + scale);
+  }
+}
+
+
 
 // Function:    equalClick()
 // Description: called upon when the "=" button is clicked, and will carry out the calculation
@@ -227,15 +248,17 @@ const equalClick = () => {
     secondNum = calcDisplay.value
   }
 
-  calcDisplay.value = operate(selectedOperator, firstNum, secondNum)
+  calcDisplay.value = roundNumber(operate(selectedOperator, firstNum, secondNum), 7)
 
   operatorLastClicked = false
   operatorSet = false
 }
 
 
+
 // Function:    backspaceClick()
-// Description: 
+// Description: called upon when a request to delete the most recent character added to
+//              the calculator display and will remove the most recent character
 // Parameters:  N/A
 // Return:      N/A
 const backspaceClick = () => {
@@ -258,7 +281,7 @@ const backspaceClick = () => {
 const onKeyDown = (e) => {
   // if the pressed key is a number between 0 and 9, it will be added to 
   // the calculator display
-  if (e.key >= 0 && e.key <= 9) {
+  if (e.key >= 0 && e.key <= 9 || e.key === ".") {
     processEnteredNum(e.key)
   }
   // if the pressed key is an operator, the selected operator will be set for the
